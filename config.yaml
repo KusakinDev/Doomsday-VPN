@@ -12,5 +12,5 @@ auth:
 masquerade:
   type: proxy
   proxy:
-    url: https://news.ycombinator.com/
+    url: https://www.github.com
     rewriteHost: true

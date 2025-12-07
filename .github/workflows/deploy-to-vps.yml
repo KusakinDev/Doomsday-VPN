@@ -20,4 +20,4 @@ jobs:
         script: |
           cd /root/doomsday-vpn
           git pull origin ${{ env.DEPLOY_BRANCH }}
-        
+          ./scripts/copy-config.sh
