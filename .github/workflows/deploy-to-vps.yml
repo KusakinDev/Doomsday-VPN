@@ -10,8 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_BRANCH: ${{ github.event.inputs.branch || 'master' }}
+    steps:
+    - name: Deliver to vps
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
         script: |
           cd /root/doomsday-vpn
           git pull origin ${{ env.DEPLOY_BRANCH }}
           ./scripts/copy-config.sh
-        host: ${{ secrets.VPS_HOST }}
