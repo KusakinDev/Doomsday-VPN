@@ -21,6 +21,10 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+    # - name: Set and deploy
+    #   env:
+    #     DEPLOY_BRANCH: ${{ github.event.inputs.branch || 'master' }}
+
     - name: Set deployment branch
       run: |
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -35,7 +39,8 @@ jobs:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_PRIVATE_KEY }}
+        envs: DEPLOY_BRANCH
         script: |
           cd /root/doomsday-vpn
-          git pull origin ${{ env.BRANCH }}
+          git pull origin ${{ env.DEPLOY_BRANCH }}
         
