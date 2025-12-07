@@ -3,43 +3,20 @@ on:
   push:
     branches: [ master ]
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Select branch to deploy'
-        required: true
-        default: 'master'
-        type: choice
-        options:
-          - master
-          - dev
-      force:
-        description: 'Force deploy'
-        required: false
-        type: boolean
+    
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_BRANCH: ${{ github.event.inputs.branch || 'master' }}
     steps:
-    # - name: Set and deploy
-    #   env:
-    #     DEPLOY_BRANCH: ${{ github.event.inputs.branch || 'master' }}
-
-    - name: Set deployment branch
-      run: |
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "DEPLOY_BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
-        else
-          echo "DEPLOY_BRANCH=master" >> $GITHUB_ENV
-        fi
-
-    - name: Deploy via SSH Action
+    - name: Deliver to vps
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_PRIVATE_KEY }}
-        envs: DEPLOY_BRANCH
         script: |
           cd /root/doomsday-vpn
           git pull origin ${{ env.DEPLOY_BRANCH }}
