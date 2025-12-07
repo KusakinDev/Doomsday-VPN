@@ -29,16 +29,13 @@ jobs:
           echo "DEPLOY_BRANCH=master" >> $GITHUB_ENV
         fi
 
-    - name: Setup SSH connection
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-
-    - name: Deploy to VPS
-      run: |
-        ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+    - name: Deploy via SSH Action
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
           cd /root/doomsday-vpn
-          git pull origin $DEPLOY_BRANCH
-        "
+          git pull origin ${{ env.BRANCH }}
+        
