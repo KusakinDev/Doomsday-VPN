@@ -11,7 +11,7 @@ auth:
 masquerade:
   type: proxy
   proxy:
-    url: https://клик.раша.рф
+    url: https://yandex.ru
     rewriteHost: true
 
 quic:
