@@ -1,43 +1,16 @@
-listen: :443
+# listen: :443
 
-tls:
-  cert: /etc/hysteria/certs/cert.pem
-  key: /etc/hysteria/certs/key.pem
+acme:
+  domains:
+    - senator.giize.com
+  email: pm12.kusakin@gmail.com
 
 auth:
   type: password
-  password: U5Dk9pX2wLqR8tYv3ZsN7bHcM1jK4fG6
+  password: algFNdE82VhJulMxov+JMdg5
 
 masquerade:
   type: proxy
   proxy:
-    url: https://yandex.ru
+    url: https://news.ycombinator.com/
     rewriteHost: true
-
-quic:
-  initStreamReceiveWindow: 8388608
-  maxStreamReceiveWindow: 8388608
-  initConnReceiveWindow: 20971520
-  maxConnReceiveWindow: 20971520
-  maxIdleTimeout: 30s
-  maxIncomingStreams: 1024
-  disablePathMTUDiscovery: false
-
-bandwidth:
-  up: 100 mbps
-  down: 100 mbps
-
-ignoreClientBandwidth: false
-
-disableUDP: false
-
-udpIdleTimeout: 60s
-
-resolver:
-  type: udp
-  tcp:
-    addr: 8.8.8.8:53
-    timeout: 4s
-  udp:
-    addr: 8.8.8.8:53
-    timeout: 4s
