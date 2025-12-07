@@ -1,0 +1,20 @@
+proxies:
+  - name: "Hysteria Яндекс"
+    type: hysteria
+    server: 194.34.238.253
+    port: 443
+    ports: 443
+    protocol: udp
+    auth-str: "U5Dk9pX2wLqR8tYv3ZsN7bHcM1jK4fG6"
+    sni: "yandex.ru"
+    alpn:
+      - h3
+    skip-cert-verify: true
+    recv-window-conn: 20971520
+    recv-window: 8388608
+    disable-mtu-discovery: false
+    fast-open: true
+    client-fingerprint: chrome
+    up: "100"
+    down: "100"
+    obfs: none
