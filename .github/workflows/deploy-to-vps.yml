@@ -21,3 +21,4 @@ jobs:
           cd /root/doomsday-vpn
           git pull origin ${{ env.DEPLOY_BRANCH }}
           bash ./scripts/copy-config.sh
+          systemctl restart hysteria-server
