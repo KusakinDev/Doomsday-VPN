@@ -12,7 +12,7 @@ auth:
 masquerade:
   type: proxy
   proxy:
-    url: https://www.github.com
+    url: https://ria.ru
     rewriteHost: true
 
 obfs:
