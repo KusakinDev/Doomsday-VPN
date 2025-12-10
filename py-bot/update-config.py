@@ -3,11 +3,13 @@ import yaml
 import subprocess
 import sys
 
-# Пути к файлам
-#CONFIG_FILE = '/etc/hysteria/config.yaml'
-#USERS_FILE = '/etc/hysteria/users.txt'
-CONFIG_FILE = './config.yaml'
-USERS_FILE = './users.txt'
+# prod
+CONFIG_FILE = '/etc/hysteria/config.yaml'
+USERS_FILE = '/etc/hysteria/users.txt'
+
+# # local
+# CONFIG_FILE = './config.yaml'
+# USERS_FILE = './users.txt'
 
 def read_passwords():
     """Чтение паролей из файла"""
@@ -62,10 +64,10 @@ def main():
 
     if update_config(passwords):
         print("Complete to update config")
-        # if restart_hysteria():
-        #     print("Config updated and hysteria restarted")
-        # else:
-        #     print("Config updated but restart failed")
+        if restart_hysteria():
+            print("Config updated and hysteria restarted")
+        else:
+            print("Config updated but restart failed")
     else:
         print("Failed to update config")
 
