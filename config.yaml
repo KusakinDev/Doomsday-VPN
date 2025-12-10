@@ -10,10 +10,10 @@ auth:
   password: algFNdE82VhJulMxov+JMdg5
 
 masquerade:
-  type: proxy
-  proxy:
-    url: https://ria.ru
-    rewriteHost: true
+  type: file
+  file:
+    dir: /var/www/html
+    index: index.html
 
 obfs:
   type: salamander
