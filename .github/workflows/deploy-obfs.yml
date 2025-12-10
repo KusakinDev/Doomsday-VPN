@@ -1,11 +1,6 @@
 name: Deploy (obfs)
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to deploy'
-        required: false
-        default: 'master'
+  workflow_dispatch: {}
 
 jobs:
   deploy:
@@ -20,8 +15,8 @@ jobs:
         key: ${{ secrets.VPS_PRIVATE_KEY }}
         script: |
           cd /root/doomsday-vpn
-          BRANCH="${{ github.event.inputs.branch || 'master' }}"
-          echo "Deploying branch: $BRANCH"
+          BRANCH="${{ github.ref_name }}"
+          echo "Deploying branch (selected in UI): $BRANCH"
           git pull origin "$BRANCH"
           bash ./scripts/copy-config-obfs.sh
           systemctl restart hysteria-server
