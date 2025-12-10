@@ -1,9 +1,15 @@
-# listen: :443
+# # listen: :443
 
-acme:
-  domains:
-    - senator.giize.com
-  email: pm12.kusakin@gmail.com
+# acme:
+#   domains:
+#     - senator.giize.com
+#   email: pm12.kusakin@gmail.com
+
+listen: :443
+
+tls:
+  cert: /etc/hysteria/certs/cert.pem
+  key: /etc/hysteria/certs/key.pem
 
 auth:
   type: password
