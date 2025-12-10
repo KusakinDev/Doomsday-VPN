@@ -7,8 +7,13 @@ auth:
   type: password
   password: algFNdE82VhJulMxov+JMdg5
 
-masquerade:
-  type: proxy
-  proxy:
-    url: https://www.github.com
-    rewriteHost: true
+# masquerade:
+#   type: proxy
+#   proxy:
+#     url: https://www.github.com
+#     rewriteHost: true
+
+obfs:
+  type: salamander
+  salamander:
+    password: Zpov2bBbv7h916kp2/z2Cw==
