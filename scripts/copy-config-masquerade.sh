@@ -16,7 +16,7 @@ mkdir -p "$TARGET_DIR" || { echo "Failed to create $TARGET_DIR" >&2; exit 1; }
 
 if [ -z "$SRC_FILE" ]; then
   SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-  SRC_FILE="$SCRIPT_DIR/../config.yaml"
+  SRC_FILE="$SCRIPT_DIR/../config-masquerade.yaml"
 fi
 
 cp -p "$SRC_FILE" "$TARGET_FILE" || { echo "Failed to copy $SRC_FILE to $TARGET_FILE" >&2; exit 1; }
