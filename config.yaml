@@ -1,27 +1,22 @@
-# # listen: :443
-
-# acme:
-#   domains:
-#     - senator.giize.com
-#   email: pm12.kusakin@gmail.com
-
-listen: :443
-
-tls:
-  cert: /etc/hysteria/certs/cert.pem
-  key: /etc/hysteria/certs/key.pem
+acme:
+  domains:
+    - senator.giize.com
+  email: pm12.kusakin@gmail.com
 
 auth:
   type: password
   password: algFNdE82VhJulMxov+JMdg5
 
 masquerade:
-  type: file
-  file:
-    dir: /var/www/html
-    index: index.html
+  type: proxy
+  proxy:
+    url: https://www.ria.ru
+    rewriteHost: true
 
-obfs:
-  type: salamander
-  salamander:
-    password: Zpov2bBbv7h916kp2/z2Cw==
+ignoreClientBandwidth: true
+
+resolver:
+  type: udp
+  udp:
+    addr: 1.1.1.1:53
+    timeout: 4s
