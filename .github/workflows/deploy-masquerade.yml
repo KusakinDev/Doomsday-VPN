@@ -21,4 +21,13 @@ jobs:
           git checkout "$BRANCH"
           git pull origin "$BRANCH"
           bash ./scripts/copy-config-masquerade.sh
-          systemctl restart hysteria-server
+          
+    - name: Start py-bot and update config
+      run: | 
+            cd py-bot
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
+            python update-config.py
+            python bot.py
+

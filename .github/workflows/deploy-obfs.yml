@@ -7,7 +7,7 @@ jobs:
     name: Deploy Obfs
     runs-on: ubuntu-latest
     steps:
-    - name: Deliver to vps (obfs)
+    - name: Deliver to vps (obfs) and copy config
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -21,4 +21,17 @@ jobs:
           git checkout "$BRANCH"
           git pull origin "$BRANCH"
           bash ./scripts/copy-config-obfs.sh
-          systemctl restart hysteria-server
+
+    - name: Start py-bot and update config
+      run: | 
+            cd py-bot
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
+            python update-config.py
+            python bot.py
+    
+          
+    
+            
+    
