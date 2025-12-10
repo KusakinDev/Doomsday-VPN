@@ -16,4 +16,4 @@ with open('/etc/hysteria/users.txt', 'a') as f:
 
 # Вывод результата
 print(f"Password: {password}")
-print(f"Link: hy2://{password}@senator.giize.com:443#User")
+print(f"Link: hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN")
