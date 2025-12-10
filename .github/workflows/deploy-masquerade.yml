@@ -20,5 +20,5 @@ jobs:
           git fetch origin
           git checkout "$BRANCH"
           git pull origin "$BRANCH"
-          bash ./scripts/copy-config-obfs.sh
+          bash ./scripts/copy-config-masquerade.sh
           systemctl restart hysteria-server
