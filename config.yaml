@@ -13,7 +13,17 @@ auth:
 #     url: https://www.github.com
 #     rewriteHost: true
 
+# obfs:
+#   type: salamander
+#   salamander:
+#     password: Zpov2bBbv7h916kp2/z2Cw==
+
 obfs:
-  type: salamander
-  salamander:
-    password: Zpov2bBbv7h916kp2/z2Cw==
+  type: http
+  http:
+    host: "www.github.com"
+    path: "/api/graphql"
+    headers:
+      User-Agent: "Mozilla/5.0"
+      Content-Type: "application/json"
+      Accept: "*/*"
