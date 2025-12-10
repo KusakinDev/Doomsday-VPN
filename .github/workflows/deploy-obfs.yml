@@ -22,8 +22,13 @@ jobs:
           git pull origin "$BRANCH"
           bash ./scripts/copy-config-obfs.sh
 
-    - name: Start py-bot and update config
-      run: | 
+    - name: Start py-bot on VPS
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
+        script: |
             cd /root/doomsday-vpn/py-bot
             python3 -m venv venv
             source venv/bin/activate
