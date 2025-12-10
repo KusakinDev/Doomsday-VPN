@@ -10,7 +10,7 @@ auth:
 masquerade:
   type: proxy
   proxy:
-    url: https://www.ria.ru
+    url: https://www.github.com
     rewriteHost: true
 
 ignoreClientBandwidth: true
