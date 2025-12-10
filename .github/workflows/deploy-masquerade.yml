@@ -34,5 +34,5 @@ jobs:
             source venv/bin/activate
             pip install -r requirements.txt
             python update-config.py
-            python bot.py
+            nohup ./venv/bin/python -u bot.py >> bot.log 2>&1 &
 
