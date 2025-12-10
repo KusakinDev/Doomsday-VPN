@@ -1,0 +1,14 @@
+acme:
+  domains:
+    - senator.giize.com
+  email: pm12.kusakin@gmail.com
+
+auth:
+  type: password
+  password: algFNdE82VhJulMxov+JMdg5
+
+masquerade:
+  type: proxy
+  proxy:
+    url: https://www.github.com
+    rewriteHost: true

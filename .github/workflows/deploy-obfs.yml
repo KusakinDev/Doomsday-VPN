@@ -1,0 +1,27 @@
+name: Deploy (obfs)
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: false
+        default: 'master'
+
+jobs:
+  deploy:
+    name: Deploy Obfs
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deliver to vps (obfs)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
+        script: |
+          cd /root/doomsday-vpn
+          BRANCH="${{ github.event.inputs.branch || 'master' }}"
+          echo "Deploying branch: $BRANCH"
+          git pull origin "$BRANCH"
+          bash ./scripts/copy-config-obfs.sh
+          systemctl restart hysteria-server
