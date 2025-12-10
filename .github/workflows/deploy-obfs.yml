@@ -24,7 +24,7 @@ jobs:
 
     - name: Start py-bot and update config
       run: | 
-            cd py-bot
+            cd /root/doomsday-vpn/py-bot
             python3 -m venv venv
             source venv/bin/activate
             pip install -r requirements.txt
