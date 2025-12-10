@@ -14,3 +14,8 @@ masquerade:
   proxy:
     url: https://www.github.com
     rewriteHost: true
+
+obfs:
+  type: salamander
+  salamander:
+    password: Zpov2bBbv7h916kp2/z2Cw==
