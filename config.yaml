@@ -12,11 +12,3 @@ masquerade:
   proxy:
     url: https://www.github.com
     rewriteHost: true
-
-ignoreClientBandwidth: true
-
-resolver:
-  type: udp
-  udp:
-    addr: 1.1.1.1:53
-    timeout: 4s
