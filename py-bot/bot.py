@@ -4,7 +4,9 @@ import subprocess
 import sys
 import os
 import tempfile
+import html
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 
@@ -126,11 +128,11 @@ async def register_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
         out_text = stdout.decode('utf-8').strip()
         err_text = stderr.decode('utf-8').strip()
         if proc.returncode != 0:
-            msg = f'Error (code {proc.returncode}):\n{err_text or out_text}'
-            await update.message.reply_text(msg)
+            msg = err_text or out_text or 'Unknown error'
+            await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
             return
-        # send output back to user
-        await update.message.reply_text(f'Registration result:\n{out_text}')
+        # send output back to user (preformatted)
+        await update.message.reply_text(f'<pre>{html.escape(out_text)}</pre>', parse_mode=ParseMode.HTML)
         # After successful registration, run update-config.py to refresh Hysteria config
         update_script = os.path.join(os.path.dirname(__file__), 'update-config.py')
         if os.path.isfile(update_script):
@@ -144,11 +146,12 @@ async def register_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 out2_text = out2.decode('utf-8').strip()
                 err2_text = err2.decode('utf-8').strip()
                 if proc2.returncode != 0:
-                    await update.message.reply_text(f'Config update failed (code {proc2.returncode}):\n{err2_text or out2_text}')
+                    msg = err2_text or out2_text or f'Exit code {proc2.returncode}'
+                    await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
                 else:
                     # send update-config output (shorten if very long)
                     msg = out2_text if len(out2_text) < 1500 else out2_text[:1497] + '...'
-                    await update.message.reply_text(f'Config update result:\n{msg}')
+                    await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
             except Exception:
                 logger.exception('Failed to run update-config.py')
                 await update.message.reply_text('Failed to run config update')
