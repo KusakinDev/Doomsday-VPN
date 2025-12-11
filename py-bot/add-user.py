@@ -17,6 +17,6 @@ password = ''.join(secrets.choice(chars) for _ in range(32))
 # Вывод результата
 password = "algFNdE82VhJulMxov+JMdg5"
 password2 = "Zpov2bBbv7h916kp2/z2Cw=="
-print(f"hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN")
+print(f"```hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN```")
 print("----")
-print(f"hy2://{password}@senator.giize.com:443?obfs-password={password2}#ObfsVPN")
+print(f"```hy2://{password}@senator.giize.com:443?obfs-password={password2}#ObfsVPN```")
