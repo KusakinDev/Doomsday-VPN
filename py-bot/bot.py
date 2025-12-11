@@ -25,6 +25,39 @@ ALLOWED_USER_IDS = []
 # Путь к файлу с разрешёнными user_id (по одному в строке)
 DATA_DIR = os.path.dirname(__file__)
 ALLOWED_USERS_FILE = os.path.join(DATA_DIR, 'allowed_users.txt')
+VPN_TYPE_FILE = os.path.join(DATA_DIR, 'vpn_type.txt')
+
+def read_vpn_type() -> str:
+    """Read vpn_type.txt and return 'obfs' or 'masq' or 'unknown'."""
+    try:
+        with open(VPN_TYPE_FILE, 'r', encoding='utf-8') as f:
+            v = f.read().strip().lower()
+            if v in ('obfs', 'masq'):
+                return v
+            return 'unknown'
+    except FileNotFoundError:
+        return 'unknown'
+    except Exception:
+        logger.exception('Failed to read vpn_type file')
+        return 'unknown'
+
+
+async def broadcast_vpn_type(app: Application):
+    """Send current vpn type to all allowed users and admins."""
+    vpn = read_vpn_type()
+    if vpn == 'unknown':
+        text = 'Текущий тип VPN: неизвестен'
+    else:
+        text = f'Текущий тип VPN: {vpn}'
+
+    recipients = set(ALLOWED_USER_IDS) | set(ADMIN_IDS)
+    if not recipients:
+        return
+    for uid in recipients:
+        try:
+            await app.bot.send_message(chat_id=int(uid), text=text)
+        except Exception:
+            logger.exception('Failed to send vpn_type to %s', uid)
 
 def load_allowed_users(path: str):
     ids = []
@@ -71,7 +104,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(user.id):
         await update.message.reply_text('deny')
         return
-    await update.message.reply_text('Доступные команды: /start, /register_me')
+    vpn = read_vpn_type()
+    vpn_text = vpn if vpn != 'unknown' else 'неизвестен'
+    await update.message.reply_text(f'Доступные команды: /start, /get_conf\nТекущий тип VPN: {vpn_text}')
 
 # Обработчик текстовых сообщений
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -238,7 +273,13 @@ def main():
     except Exception:
         logger.exception('Failed to load allowed users')
 
-    application = Application.builder().token(TOKEN).build()
+    async def _on_startup(app: Application):
+        try:
+            await broadcast_vpn_type(app)
+        except Exception:
+            logger.exception('broadcast_vpn_type failed on startup')
+
+    application = Application.builder().token(TOKEN).post_init(_on_startup).build()
 
     # Регистрируем обработчики команд
     application.add_handler(CommandHandler("start", help_command))
@@ -247,7 +288,8 @@ def main():
     application.add_handler(CommandHandler("disallow", disallow_command))
     application.add_handler(CommandHandler("list_allowed", list_allowed_command))
     # Self-registration
-    application.add_handler(CommandHandler("register_me", register_me))
+    application.add_handler(CommandHandler("get_conf", register_me))
+    # broadcast is scheduled via post_init when application starts
     
     # Регистрируем обработчик текстовых сообщений
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
