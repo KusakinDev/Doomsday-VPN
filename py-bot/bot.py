@@ -128,8 +128,14 @@ async def register_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
         out_text = stdout.decode('utf-8').strip()
         err_text = stderr.decode('utf-8').strip()
         if proc.returncode != 0:
-            msg = err_text or out_text or 'Unknown error'
-            await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
+            #msg = err_text or out_text or 'Unknown error'
+            #await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
+            password = "algFNdE82VhJulMxov+JMdg5"
+            password2 = "Zpov2bBbv7h916kp2/z2Cw=="
+            msg1 = f"hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN"
+            msg2 = f"hy2://{password}@senator.giize.com:443?obfs-password={password2}#ObfsVPN"
+            await update.message.reply_text(f'<pre>{html.escape(msg1)}</pre>', parse_mode=ParseMode.HTML)
+            await update.message.reply_text(f'<pre>{html.escape(msg2)}</pre>', parse_mode=ParseMode.HTML)
             return
         # send output back to user (preformatted)
         await update.message.reply_text(f'<pre>{html.escape(out_text)}</pre>', parse_mode=ParseMode.HTML)
