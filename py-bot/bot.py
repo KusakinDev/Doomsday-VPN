@@ -65,21 +65,13 @@ def save_allowed_users(path: str, ids):
         except Exception:
             pass
 
-# Обработчик команды /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if not is_allowed(user.id):
-        await update.message.reply_text('deny')
-        return
-    await update.message.reply_text('Привет! Я минимальный бот.')
-
 # Обработчик команды /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if not is_allowed(user.id):
         await update.message.reply_text('deny')
         return
-    await update.message.reply_text('Доступные команды: /start, /help')
+    await update.message.reply_text('Доступные команды: /start, /register_me')
 
 # Обработчик текстовых сообщений
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -130,37 +122,43 @@ async def register_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if proc.returncode != 0:
             #msg = err_text or out_text or 'Unknown error'
             #await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
-            password = "algFNdE82VhJulMxov+JMdg5"
-            password2 = "Zpov2bBbv7h916kp2/z2Cw=="
-            msg1 = f"hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN"
-            msg2 = f"hy2://{password}@senator.giize.com:443?obfs-password={password2}#ObfsVPN"
-            await update.message.reply_text(f'<pre>{html.escape(msg1)}</pre>', parse_mode=ParseMode.HTML)
-            await update.message.reply_text(f'<pre>{html.escape(msg2)}</pre>', parse_mode=ParseMode.HTML)
             return
         # send output back to user (preformatted)
-        await update.message.reply_text(f'<pre>{html.escape(out_text)}</pre>', parse_mode=ParseMode.HTML)
-        # After successful registration, run update-config.py to refresh Hysteria config
-        update_script = os.path.join(os.path.dirname(__file__), 'update-config.py')
-        if os.path.isfile(update_script):
-            try:
-                proc2 = await asyncio.create_subprocess_exec(
-                    sys.executable, update_script,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE
-                )
-                out2, err2 = await proc2.communicate()
-                out2_text = out2.decode('utf-8').strip()
-                err2_text = err2.decode('utf-8').strip()
-                if proc2.returncode != 0:
-                    msg = err2_text or out2_text or f'Exit code {proc2.returncode}'
-                    await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
-                else:
-                    # send update-config output (shorten if very long)
-                    msg = out2_text if len(out2_text) < 1500 else out2_text[:1497] + '...'
-                    await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
-            except Exception:
-                logger.exception('Failed to run update-config.py')
-                await update.message.reply_text('Failed to run config update')
+        password = "algFNdE82VhJulMxov+JMdg5"
+        password2 = "Zpov2bBbv7h916kp2/z2Cw=="
+        msg1 = f"hy2://{password}@senator.giize.com:443?sni=www.github.com#MasqueradeVPN"
+        msg2 = f"hy2://{password}@senator.giize.com:443?obfs-password={password2}#ObfsVPN"
+        msg3 = (
+            "Copy and create both connections in your Hysteria client.\n\n"
+            "ANDROID: https://play.google.com/store/apps/details?id=app.hiddify.com\n"
+            "WINDOWS: https://hiddify.com\n"
+            "iOS: https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532\n"
+        )
+        await update.message.reply_text(msg3)
+        await update.message.reply_text(f'<pre>{html.escape(msg1)}</pre>', parse_mode=ParseMode.HTML)
+        await update.message.reply_text(f'<pre>{html.escape(msg2)}</pre>', parse_mode=ParseMode.HTML)
+        # # After successful registration, run update-config.py to refresh Hysteria config
+        # update_script = os.path.join(os.path.dirname(__file__), 'update-config.py')
+        # if os.path.isfile(update_script):
+        #     try:
+        #         proc2 = await asyncio.create_subprocess_exec(
+        #             sys.executable, update_script,
+        #             stdout=asyncio.subprocess.PIPE,
+        #             stderr=asyncio.subprocess.PIPE
+        #         )
+        #         out2, err2 = await proc2.communicate()
+        #         out2_text = out2.decode('utf-8').strip()
+        #         err2_text = err2.decode('utf-8').strip()
+        #         if proc2.returncode != 0:
+        #             msg = err2_text or out2_text or f'Exit code {proc2.returncode}'
+        #             await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
+        #         else:
+        #             # send update-config output (shorten if very long)
+        #             msg = out2_text if len(out2_text) < 1500 else out2_text[:1497] + '...'
+        #             await update.message.reply_text(f'<pre>{html.escape(msg)}</pre>', parse_mode=ParseMode.HTML)
+        #     except Exception:
+        #         logger.exception('Failed to run update-config.py')
+        #         await update.message.reply_text('Failed to run config update')
     except Exception as e:
         logger.exception('Failed to run add-user.py')
         await update.message.reply_text(f'Failed to register: {e}')
@@ -243,8 +241,7 @@ def main():
     application = Application.builder().token(TOKEN).build()
 
     # Регистрируем обработчики команд
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("start", help_command))
     # Админские команды
     application.add_handler(CommandHandler("allow", allow_command))
     application.add_handler(CommandHandler("disallow", disallow_command))
